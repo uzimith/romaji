@@ -49,7 +49,16 @@ impl Romaji {
             .chars()
             .into_iter()
             .map(|x| x.to_string())
-            .collect::<Vec<String>>()
+            .fold(Vec::new(), |mut acc, x: String| {
+                match x.as_ref() {
+                    "a" | "i" | "u" | "e" | "o" => match acc.last_mut() {
+                        Some(last) => *last = *last + &x,
+                        None => acc.push(x)
+                    },
+                    _ => acc.push(x)
+                }
+                acc
+            })
     }
 }
 
