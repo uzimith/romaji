@@ -1,5 +1,5 @@
-pub fn kana_to_romaji(kana: &str) -> &str {
-    match kana {
+pub fn kana_to_romaji(kana: String) -> String {
+    match kana.as_ref() {
         "ア" => "a",
         "イ" => "i",
         "ウ" => "u",
@@ -150,11 +150,11 @@ pub fn kana_to_romaji(kana: &str) -> &str {
         "デェ" => "dhe",
         "デョ" => "dho",
         kana => kana
-    }
+    }.to_string()
 }
 
 #[test]
 fn test_kana_to_romaji() {
-    assert_eq!("e", kana_to_romaji("エ"));
-    assert_eq!("va", kana_to_romaji("ヴァ"));
+    assert_eq!("e", kana_to_romaji("エ".to_string()));
+    assert_eq!("va", kana_to_romaji("ヴァ".to_string()));
 }

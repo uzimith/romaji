@@ -1,5 +1,4 @@
 //! Romaji <-> Hira/Kana transliterator
-
 use std::ascii::AsciiExt;
 
 use convert::romaji_to_kana;
@@ -25,7 +24,7 @@ impl Romaji {
         self.inner = self.inner
             .clone()
             .into_iter()
-            .map(|x| romaji_to_kana(&x).to_string())
+            .map(|x| romaji_to_kana(x))
             .collect::<Vec<String>>();
         self
     }
@@ -34,7 +33,7 @@ impl Romaji {
         self.inner = self.inner
             .clone()
             .into_iter()
-            .map(|x| kana_to_romaji(&x).to_string())
+            .map(|x| kana_to_romaji(x))
             .collect::<Vec<String>>();
         self
     }
