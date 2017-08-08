@@ -44,21 +44,40 @@ impl Romaji {
     }
 
     fn split(input: &str) -> Vec<String> {
-        input
+        let mut chars = input
             .to_ascii_lowercase()
             .chars()
             .into_iter()
             .map(|x| x.to_string())
-            .fold(Vec::new(), |mut acc, x: String| {
-                match x.as_ref() {
-                    "a" | "i" | "u" | "e" | "o" => match acc.last_mut() {
-                        Some(last) => *last = *last + &x,
-                        None => acc.push(x)
-                    },
-                    _ => acc.push(x)
+            .rev()
+            .collect::<Vec<String>>();
+
+        let mut res = vec!();
+        let mut buffer = "".to_string();
+        while let Some(char) = chars.pop() {
+            match char.as_ref() {
+                "a" | "i" | "u" | "e" | "o" => {
+                    res.push(buffer + &char);
+                    buffer = "".to_string()
                 }
-                acc
-            })
+                _ if buffer == "n" || buffer == "m" => {
+                    // if a letter after n, m is not a kind of vowel,
+                    res.push(buffer);
+                    buffer = char.clone()
+                },
+                x if x.is_ascii() => {
+                    buffer += &char
+                },
+                _ => {
+                    res.push(buffer + &char);
+                    buffer = "".to_string()
+                }
+            }
+        }
+        if buffer != "" {
+            res.push(buffer);
+        }
+        res
     }
 }
 
@@ -85,7 +104,7 @@ fn test_split() {
         Romaji::split("kinkakuji")
     );
     assert_eq!(
-        vec!["to", "ッ", "to", "ri"],
+        vec!["to", "tto", "ri"],
         Romaji::split("tottori")
     );
     assert_eq!(
