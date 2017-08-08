@@ -1,5 +1,5 @@
-pub fn kana_to_romaji(kana: String) -> String {
-    match kana.as_ref() {
+pub fn katakana_to_romaji(katakana: String) -> String {
+    match katakana.as_ref() {
         "ア" => "a",
         "イ" => "i",
         "ウ" => "u",
@@ -154,7 +154,7 @@ pub fn kana_to_romaji(kana: String) -> String {
 }
 
 #[test]
-fn test_kana_to_romaji() {
-    assert_eq!("e", kana_to_romaji("エ".to_string()));
-    assert_eq!("va", kana_to_romaji("ヴァ".to_string()));
+fn test_katakana_to_romaji() {
+    assert_eq!("e", katakana_to_romaji("エ".to_string()));
+    assert_eq!("va", katakana_to_romaji("ヴァ".to_string()));
 }

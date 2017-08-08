@@ -1,14 +1,14 @@
-pub fn romaji_to_kana(romaji: String) -> String {
+pub fn romaji_to_katakana(romaji: String) -> String {
     let mut chars = romaji.chars();
     if chars.clone().nth(0) == chars.clone().nth(1) {
         chars.next();
-        format!("{}{}", "ッ", romaji_map(String::from(chars.as_str())))
+        format!("{}{}", "ッ", katakana_map(String::from(chars.as_str())))
     } else {
-        romaji_map(String::from(chars.as_str()))
+        katakana_map(String::from(chars.as_str()))
     }
 }
 
-fn romaji_map(romaji: String) -> String {
+fn katakana_map(romaji: String) -> String {
     match romaji.as_ref() {
         "a" => "ア",
         "i" => "イ",
@@ -116,6 +116,7 @@ fn romaji_map(romaji: String) -> String {
         "wo" => "ヲ",
         "nn" => "ン",
         "n" => "ン",
+        "m" => "ン",
         "tsu" => "ツ",
         "xka" => "ヵ",
         "xke" => "ヶ",
@@ -234,9 +235,9 @@ fn romaji_map(romaji: String) -> String {
 }
 
 #[test]
-fn test_romaji_to_kana() {
-    assert_eq!("ア", romaji_to_kana("a".to_string()));
-    assert_eq!("チョ", romaji_to_kana("cho".to_string()));
-    assert_eq!("ー", romaji_to_kana("-".to_string()));
-    assert_eq!("ット", romaji_to_kana("tto".to_string()));
+fn test_romaji_to_katakana() {
+    assert_eq!("ア", romaji_to_katakana("a".to_string()));
+    assert_eq!("チョ", romaji_to_katakana("cho".to_string()));
+    assert_eq!("ー", romaji_to_katakana("-".to_string()));
+    assert_eq!("ット", romaji_to_katakana("tto".to_string()));
 }

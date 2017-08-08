@@ -4,13 +4,14 @@ use romaji::Romaji;
 
 #[test]
 fn test_katakana() {
-    assert_eq!("キョウモシナイトネ", Romaji::new("kyoumoshinaitone").hiragana().to_string());
-    assert_eq!("今日モシナイトネ", Romaji::new("今日もshinaitone").hiragana().to_string());
-    assert_eq!("スシノタベタs", Romaji::new("SushiNoTabetas").hiragana().to_string());
-    assert_eq!("シンバシ", Romaji::new("shimbashi").hiragana().to_string());
-    assert_eq!("キンカクジ", Romaji::new("kinkakuji").hiragana().to_string());
-    assert_eq!("トットリ", Romaji::new("tottori").hiragana().to_string());
-    assert_eq!("イイハナシダナー", Romaji::new("イイハナシダナー").hiragana().to_string());
+    assert_eq!("キョウモシナイトネ", Romaji::new("kyoumoshinaitone").katakana().to_string());
+    assert_eq!("今日モシナイトネ", Romaji::new("今日もshinaitone").katakana().to_string());
+    assert_eq!("イッカクジュウ", Romaji::new("ikkakuzyuu").katakana().to_string());
+    assert_eq!("スシノタベタs", Romaji::new("SushiNoTabetas").katakana().to_string());
+    assert_eq!("シンバシ", Romaji::new("shimbashi").katakana().to_string());
+    assert_eq!("キンカクジ", Romaji::new("kinkakuji").katakana().to_string());
+    assert_eq!("トットリ", Romaji::new("tottori").katakana().to_string());
+    assert_eq!("イイハナシダナー", Romaji::new("イイハナシダナー").katakana().to_string());
 }
 
 #[test]

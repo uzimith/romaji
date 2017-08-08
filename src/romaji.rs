@@ -1,8 +1,8 @@
 //! Romaji <-> Hira/Kana transliterator
 use std::ascii::AsciiExt;
-
-use convert::romaji_to_kana;
-use convert::kana_to_romaji;
+use convert;
+use rule::is_sutegana;
+use rule::is_katakana;
 
 #[derive(Debug)]
 pub struct Romaji {
@@ -17,29 +17,36 @@ impl Romaji {
     }
 
     pub fn hiragana(&mut self) -> &mut Romaji {
+        self.inner = self.inner
+            .iter()
+            .cloned()
+            .map(|x| convert::romaji_to_katakana(x))
+            .map(|x| convert::katakana_to_hiragana(x))
+            .collect::<Vec<String>>();
         self
     }
 
     pub fn katakana(&mut self) -> &mut Romaji {
         self.inner = self.inner
-            .clone()
-            .into_iter()
-            .map(|x| romaji_to_kana(x))
+            .iter()
+            .cloned()
+            .map(|x| convert::romaji_to_katakana(x))
             .collect::<Vec<String>>();
         self
     }
 
     pub fn romaji(&mut self) -> &mut Romaji {
         self.inner = self.inner
-            .clone()
-            .into_iter()
-            .map(|x| kana_to_romaji(x))
+            .iter()
+            .cloned()
+            .map(|x| convert::hiragana_to_katakana(x))
+            .map(|x| convert::katakana_to_romaji(x))
             .collect::<Vec<String>>();
         self
     }
 
     pub fn to_string(&self) -> String {
-        self.inner.join("")
+        self.inner.join("_")
     }
 
     fn split(input: &str) -> Vec<String> {
@@ -48,6 +55,7 @@ impl Romaji {
             .chars()
             .into_iter()
             .map(|x| x.to_string())
+            .map(|x| convert::hiragana_to_katakana(x))
             .rev()
             .collect::<Vec<String>>();
 
@@ -66,6 +74,10 @@ impl Romaji {
                 },
                 x if x.is_ascii() => {
                     buffer += &char
+                },
+                x if is_sutegana(x) && is_katakana(&buffer) => {
+                    res.push(buffer + &char);
+                    buffer = "".to_string()
                 },
                 _ => {
                     res.push(buffer + &char);
@@ -87,7 +99,7 @@ fn test_split() {
         Romaji::split("kyoumoshinaitone")
     );
     assert_eq!(
-        vec!["今", "日", "も", "shi", "na", "i", "to", "ne"],
+        vec!["今", "日", "モ", "shi", "na", "i", "to", "ne"],
         Romaji::split("今日もshinaitone")
     );
     assert_eq!(
@@ -109,5 +121,13 @@ fn test_split() {
     assert_eq!(
         vec!["イ", "イ", "ハ", "ナ", "シ", "ダ", "ナ", "ー"],
         Romaji::split("イイハナシダナー")
+    );
+    assert_eq!(
+        vec!["キョ", "ウ", "モ", "シ", "ナ", "イ", "ト", "ネ"],
+        Romaji::split("キョウモシナイトネ")
+    );
+    assert_eq!(
+        vec!["イ", "ッ", "カ", "ク", "ジュ", "ウ"],
+        Romaji::split("イッカクジュウ")
     );
 }
