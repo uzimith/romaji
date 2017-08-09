@@ -4,11 +4,8 @@ pub fn is_kana(kana: &str) -> bool {
 
 pub fn is_katakana(kana: &str) -> bool {
     kana == "ア" ||
-        kana == "ィ" ||
         kana == "イ" ||
-        kana == "ゥ" ||
         kana == "ウ" ||
-        kana == "ェ" ||
         kana == "エ" ||
         kana == "ォ" ||
         kana == "オ" ||
@@ -36,7 +33,6 @@ pub fn is_katakana(kana: &str) -> bool {
         kana == "ダ" ||
         kana == "チ" ||
         kana == "ヂ" ||
-        kana == "ッ" ||
         kana == "ツ" ||
         kana == "ヅ" ||
         kana == "テ" ||
@@ -68,34 +64,28 @@ pub fn is_katakana(kana: &str) -> bool {
         kana == "ム" ||
         kana == "メ" ||
         kana == "モ" ||
-        kana == "ャ" ||
         kana == "ヤ" ||
-        kana == "ュ" ||
         kana == "ユ" ||
-        kana == "ョ" ||
         kana == "ヨ" ||
         kana == "ラ" ||
         kana == "リ" ||
         kana == "ル" ||
         kana == "レ" ||
         kana == "ロ" ||
-        kana == "ヮ" ||
         kana == "ワ" ||
         kana == "ヰ" ||
         kana == "ヱ" ||
         kana == "ヲ" ||
-        kana == "ン"
+        kana == "ン" ||
+        kana == "ー"
 }
 
 pub fn is_hiragana(kana: &str) -> bool {
     kana == "あ" ||
-        kana == "ぃ" ||
         kana == "い" ||
         kana == "ぅ" ||
         kana == "う" ||
-        kana == "ぇ" ||
         kana == "え" ||
-        kana == "ぉ" ||
         kana == "お" ||
         kana == "か" ||
         kana == "が" ||
@@ -153,23 +143,20 @@ pub fn is_hiragana(kana: &str) -> bool {
         kana == "む" ||
         kana == "め" ||
         kana == "も" ||
-        kana == "ゃ" ||
         kana == "や" ||
-        kana == "ゅ" ||
         kana == "ゆ" ||
-        kana == "ょ" ||
         kana == "よ" ||
         kana == "ら" ||
         kana == "り" ||
         kana == "る" ||
         kana == "れ" ||
         kana == "ろ" ||
-        kana == "ゎ" ||
         kana == "わ" ||
         kana == "ゐ" ||
         kana == "ゑ" ||
         kana == "を" ||
-        kana == "ん"
+        kana == "ん" ||
+        kana == "ー"
 }
 
 pub fn is_sutegana(kana: &str) -> bool {

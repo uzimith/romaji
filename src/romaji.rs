@@ -54,7 +54,6 @@ impl Romaji {
         let mut chars = input
             .to_ascii_lowercase()
             .chars()
-            .into_iter()
             .map(|x| x.to_string())
             .map(|x| convert::hiragana_to_katakana(x))
             .rev()
@@ -73,8 +72,20 @@ impl Romaji {
                     res.push(buffer);
                     buffer = char.clone()
                 },
-                x if x.is_ascii() => {
+                x if x.is_ascii() && buffer.is_ascii() => {
                     buffer += &char
+                },
+                x if x.is_ascii() && is_katakana(&buffer) => {
+                    res.push(buffer);
+                    buffer = char.to_string()
+                },
+                x if is_katakana(x) && is_katakana(&buffer) => {
+                    res.push(buffer);
+                    buffer = char.to_string()
+                },
+                x if is_hatsuon(x) => {
+                    res.push(buffer);
+                    buffer = char.to_string()
                 },
                 x if is_youon(x) && is_katakana(&buffer) => {
                     res.push(buffer + &char);
@@ -83,6 +94,9 @@ impl Romaji {
                 x if is_katakana(x) && is_hatsuon(&buffer) => {
                     res.push(buffer + &char);
                     buffer = "".to_string()
+                },
+                x if is_katakana(x) => {
+                    buffer += &char
                 },
                 _ => {
                     res.push(buffer + &char);
