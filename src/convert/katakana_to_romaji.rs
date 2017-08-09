@@ -1,4 +1,8 @@
 pub fn katakana_to_romaji(katakana: String) -> String {
+    romaji_map(katakana)
+
+}
+pub fn romaji_map(katakana: String) -> String {
     match katakana.as_ref() {
         "ア" => "a",
         "イ" => "i",
@@ -157,4 +161,5 @@ pub fn katakana_to_romaji(katakana: String) -> String {
 fn test_katakana_to_romaji() {
     assert_eq!("e", katakana_to_romaji("エ".to_string()));
     assert_eq!("va", katakana_to_romaji("ヴァ".to_string()));
+    assert_eq!("tto", katakana_to_romaji("ット".to_string()));
 }

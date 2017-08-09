@@ -173,6 +173,10 @@ pub fn is_hiragana(kana: &str) -> bool {
 }
 
 pub fn is_sutegana(kana: &str) -> bool {
+    is_youon(kana) || is_hatsuon(kana)
+}
+
+pub fn is_youon(kana: &str) -> bool {
     kana == "ァ" ||
         kana == "ィ" ||
         kana == "ゥ" ||
@@ -181,7 +185,6 @@ pub fn is_sutegana(kana: &str) -> bool {
         kana == "ャ" ||
         kana == "ュ" ||
         kana == "ョ" ||
-        kana == "ッ" ||
         kana == "ぁ" ||
         kana == "ぃ" ||
         kana == "ぅ" ||
@@ -189,7 +192,10 @@ pub fn is_sutegana(kana: &str) -> bool {
         kana == "ぉ" ||
         kana == "ゃ" ||
         kana == "ゅ" ||
-        kana == "ょ" ||
-        kana == "ッ"
+        kana == "ょ"
 }
 
+pub fn is_hatsuon(kana: &str) -> bool {
+    kana == "っ" ||
+        kana == "ッ"
+}

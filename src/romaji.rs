@@ -1,8 +1,9 @@
 //! Romaji <-> Hira/Kana transliterator
 use std::ascii::AsciiExt;
 use convert;
-use rule::is_sutegana;
 use rule::is_katakana;
+use rule::is_youon;
+use rule::is_hatsuon;
 
 #[derive(Debug)]
 pub struct Romaji {
@@ -75,7 +76,11 @@ impl Romaji {
                 x if x.is_ascii() => {
                     buffer += &char
                 },
-                x if is_sutegana(x) && is_katakana(&buffer) => {
+                x if is_youon(x) && is_katakana(&buffer) => {
+                    res.push(buffer + &char);
+                    buffer = "".to_string()
+                },
+                x if is_katakana(x) && is_hatsuon(&buffer) => {
                     res.push(buffer + &char);
                     buffer = "".to_string()
                 },
@@ -127,7 +132,7 @@ fn test_split() {
         Romaji::split("キョウモシナイトネ")
     );
     assert_eq!(
-        vec!["イ", "ッ", "カ", "ク", "ジュ", "ウ"],
+        vec!["イ", "ッカ", "ク", "ジュ", "ウ"],
         Romaji::split("イッカクジュウ")
     );
 }
