@@ -7,17 +7,17 @@ use rule::is_hatsuon;
 
 #[derive(Debug)]
 pub struct Romaji {
-    inner: Vec<String>
+    inner: String
 }
 
 impl Romaji {
-    pub fn new(s: &str) -> Romaji {
+    pub fn new(inner: &str) -> Romaji {
         Romaji {
-            inner: Romaji::split(s)
+            inner: inner.to_string()
         }
     }
 
-    pub fn hiragana(&mut self) -> &mut Romaji {
+    pub fn hiragana(&self) -> String {
         self.inner = self.inner
             .iter()
             .cloned()
@@ -47,17 +47,18 @@ impl Romaji {
     }
 
     pub fn to_string(&self) -> String {
-        self.inner.join("_")
+        self.inner.join("")
     }
 
-    fn split(input: &str) -> Vec<String> {
+    fn kana_split(input: &str) -> Vec<String> {
         let mut chars = input
             .to_ascii_lowercase()
             .chars()
             .map(|x| x.to_string())
             .map(|x| convert::hiragana_to_katakana(x))
             .rev()
-            .collect::<Vec<String>>();
+            .collect::<Vec<String>>()
+        ;
 
         let mut res = vec!();
         let mut buffer = "".to_string();

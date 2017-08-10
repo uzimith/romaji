@@ -186,3 +186,8 @@ pub fn is_hatsuon(kana: &str) -> bool {
     kana == "っ" ||
         kana == "ッ"
 }
+
+#[test]
+fn test_split() {
+    assert_eq!();
+}
