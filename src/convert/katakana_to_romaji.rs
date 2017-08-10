@@ -1,9 +1,16 @@
 pub fn katakana_to_romaji(katakana: String) -> String {
-    romaji_map(katakana)
-
+    let mut chars = katakana.chars();
+    if let Some(first) = chars.next() {
+        if first == 'ッ' {
+            let res = romaji_map(chars.as_str());
+            return res.chars().next().unwrap().to_string() + &res
+        }
+    }
+    romaji_map(katakana.as_ref())
 }
-pub fn romaji_map(katakana: String) -> String {
-    match katakana.as_ref() {
+
+pub fn romaji_map(katakana: &str) -> String {
+    match katakana {
         "ア" => "a",
         "イ" => "i",
         "ウ" => "u",

@@ -3,14 +3,14 @@ pub fn romaji_to_katakana(romaji: String) -> String {
     let mut heads = chars.clone().take(2);
     if heads.next() == heads.next() {
         chars.next();
-        format!("{}{}", "ッ", katakana_map(String::from(chars.as_str())))
+        format!("{}{}", "ッ", katakana_map(chars.as_str()))
     } else {
-        katakana_map(String::from(chars.as_str()))
+        katakana_map(chars.as_str())
     }
 }
 
-fn katakana_map(romaji: String) -> String {
-    match romaji.as_ref() {
+fn katakana_map(romaji: &str) -> String {
+    match romaji {
         "a" => "ア",
         "i" => "イ",
         "u" => "ウ",
