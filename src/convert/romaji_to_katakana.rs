@@ -1,6 +1,7 @@
 pub fn romaji_to_katakana(romaji: String) -> String {
     let mut chars = romaji.chars();
-    if chars.clone().nth(0) == chars.clone().nth(1) {
+    let mut heads = chars.clone().take(2);
+    if heads.next() == heads.next() {
         chars.next();
         format!("{}{}", "ッ", katakana_map(String::from(chars.as_str())))
     } else {
