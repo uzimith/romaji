@@ -22,6 +22,8 @@ pub trait RomajiExt {
 
     fn is_hatsuon(&self) -> bool;
 
+    fn romaji_split(&self) -> Vec<String>;
+
     fn kana_split(&self) -> Vec<String>;
 
 }
@@ -30,7 +32,7 @@ impl RomajiExt for str {
 
     fn to_hiragana(&self) -> String {
         self
-            .kana_split()
+            .romaji_split()
             .iter()
             .cloned()
             .map(|x| convert::romaji_to_katakana(x))
@@ -41,7 +43,7 @@ impl RomajiExt for str {
 
     fn to_katakana(&self) -> String {
         self
-            .kana_split()
+            .romaji_split()
             .iter()
             .cloned()
             .map(|x| convert::romaji_to_katakana(x))
@@ -57,6 +59,93 @@ impl RomajiExt for str {
             .map(|x| convert::katakana_to_romaji(x))
             .collect::<Vec<String>>()
             .join("")
+    }
+
+    fn kana_split(&self) -> Vec<String> {
+        let mut chars = self
+            .to_ascii_lowercase()
+            .chars()
+            .map(|x| x.to_string())
+            .map(|x| convert::hiragana_to_katakana(x))
+            .rev()
+            .collect::<Vec<String>>()
+        ;
+        let mut chars = self
+            .to_ascii_lowercase()
+            .chars()
+            .map(|x| x.to_string())
+            .rev()
+            .collect::<Vec<String>>()
+        ;
+
+        let mut res = vec!();
+        let mut buffer = "".to_string();
+        while let Some(char) = chars.pop() {
+            match char.as_ref() {
+                _ if buffer.is_hatsuon() => {
+                    res.push(buffer);
+                    buffer = char.to_string()
+                },
+//                x if x.is_youon() && buffer.is_katakana() => {
+//                    res.push(buffer + &char);
+//                    buffer = "".to_string()
+//                },
+//                x if x.is_katakana() => {
+//                    buffer += &char
+//                },
+                _ if buffer == "" => {
+                    buffer = char.to_string()
+                }
+                _ => {
+                    res.push(buffer);
+                    buffer = char.to_string()
+                }
+            }
+        }
+        if buffer != "" {
+            res.push(buffer);
+        }
+        res
+    }
+
+    fn romaji_split(&self) -> Vec<String> {
+        let mut chars = self
+            .to_ascii_lowercase()
+            .chars()
+            .map(|x| x.to_string())
+            .rev()
+            .collect::<Vec<String>>()
+        ;
+
+        let mut res = vec!();
+        let mut buffer = "".to_string();
+        while let Some(char) = chars.pop() {
+            match char.as_ref() {
+                "a" | "i" | "u" | "e" | "o" => {
+                    res.push(buffer + &char);
+                    buffer = "".to_string()
+                }
+                _ if buffer == "n" || buffer == "m" => {
+                    // if a letter after n, m is not a kind of vowel,
+                    res.push(buffer);
+                    buffer = char.clone()
+                },
+                x if x.is_ascii() => {
+                    buffer += &char
+                }
+                _ if buffer == "" => {
+                    buffer = char.to_string()
+                }
+                _ => {
+                    res.push(buffer);
+                    buffer = char.to_string()
+                }
+            }
+        }
+        if buffer != "" {
+            res.push(buffer);
+        }
+        res
     }
 
     fn is_kana(&self) -> bool {
@@ -247,67 +336,6 @@ impl RomajiExt for str {
         self == "っ" ||
             self == "ッ"
     }
-
-    fn kana_split(&self) -> Vec<String> {
-        let mut chars = self
-            .to_ascii_lowercase()
-            .chars()
-            .map(|x| x.to_string())
-            .map(|x| convert::hiragana_to_katakana(x))
-            .rev()
-            .collect::<Vec<String>>()
-        ;
-
-        let mut res = vec!();
-        let mut buffer = "".to_string();
-        while let Some(char) = chars.pop() {
-            match char.as_ref() {
-                "a" | "i" | "u" | "e" | "o" => {
-                    res.push(buffer + &char);
-                    buffer = "".to_string()
-                }
-                _ if buffer == "n" || buffer == "m" => {
-                    // if a letter after n, m is not a kind of vowel,
-                    res.push(buffer);
-                    buffer = char.clone()
-                },
-                x if x.is_ascii() && buffer.is_ascii() => {
-                    buffer += &char
-                },
-                x if x.is_ascii() && buffer.is_katakana() => {
-                    res.push(buffer);
-                    buffer = char.to_string()
-                },
-                x if x.is_katakana() && buffer.is_katakana() => {
-                    res.push(buffer);
-                    buffer = char.to_string()
-                },
-                x if x.is_hatsuon() => {
-                    res.push(buffer);
-                    buffer = char.to_string()
-                },
-                x if x.is_youon() && buffer.is_katakana() => {
-                    res.push(buffer + &char);
-                    buffer = "".to_string()
-                },
-                x if x.is_katakana() && buffer.is_hatsuon() => {
-                    res.push(buffer + &char);
-                    buffer = "".to_string()
-                },
-                x if x.is_katakana() => {
-                    buffer += &char
-                },
-                _ => {
-                    res.push(buffer + &char);
-                    buffer = "".to_string()
-                }
-            }
-        }
-        if buffer != "" {
-            res.push(buffer);
-        }
-        res
-    }
 }
 
 #[test]
@@ -317,29 +345,69 @@ fn test_condition_method() {
 }
 
 #[test]
-fn test_kana_split() {
+fn test_romaji_split() {
     assert_eq!(
         vec!["kyo", "u", "mo", "shi", "na", "i", "to", "ne"],
-        "kyoumoshinaitone".kana_split()
+        "kyoumoshinaitone".romaji_split()
     );
     assert_eq!(
         vec!["今", "日", "モ", "shi", "na", "i", "to", "ne"],
-        "今日もshinaitone".kana_split()
+        "今日もshinaitone".romaji_split()
     );
     assert_eq!(
         vec!["su", "shi", "no", "ta", "be", "ta", "s"],
-        "SushiNoTabetas".kana_split()
+        "SushiNoTabetas".romaji_split()
     );
     assert_eq!(
         vec!["shi", "m", "ba", "shi"],
-        "shimbashi".kana_split()
+        "shimbashi".romaji_split()
     );
     assert_eq!(
         vec!["ki", "n", "ka", "ku", "ji"],
-        "kinkakuji".kana_split()
+        "kinkakuji".romaji_split()
     );
     assert_eq!(
         vec!["to", "tto", "ri"],
+        "tottori".romaji_split()
+    );
+    assert_eq!(
+        vec!["イ", "イ", "ハ", "ナ", "シ", "ダ", "ナ", "ー"],
+        "イイハナシダナー".romaji_split()
+    );
+    assert_eq!(
+        vec!["キ", "ョ", "ウ", "モ", "シ", "ナ", "イ", "ト", "ネ"],
+        "キョウモシナイトネ".romaji_split()
+    );
+    assert_eq!(
+        vec!["イ", "ッ", "カ", "ク", "ジ", "ュ", "ウ"],
+        "イッカクジュウ".romaji_split()
+    );
+}
+
+#[test]
+fn test_kana_split() {
+    assert_eq!(
+        vec!["k", "y", "o", "u", "m", "o", "s", "h", "i", "n", "a", "i", "t", "o", "n", "e"],
+        "kyoumoshinaitone".kana_split()
+    );
+    assert_eq!(
+        vec!["今", "日", "モ", "s", "h", "i", "n", "a", "i", "t", "o", "n", "e"],
+        "今日もshinaitone".kana_split()
+    );
+    assert_eq!(
+        vec!["S", "u", "s", "h", "i", "N", "o", "T", "a", "b", "e", "t", "a", "s"],
+        "SushiNoTabetas".kana_split()
+    );
+    assert_eq!(
+        vec!["s", "h", "i", "m", "b", "a", "s", "h", "i"],
+        "shimbashi".kana_split()
+    );
+    assert_eq!(
+        vec!["k", "i", "n", "k", "a", "k", "u", "j", "i"],
+        "kinkakuji".kana_split()
+    );
+    assert_eq!(
+        vec!["t", "o", "t", "t", "o", "r", "i"],
         "tottori".kana_split()
     );
     assert_eq!(
