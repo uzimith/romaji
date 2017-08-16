@@ -1,8 +1,10 @@
 [package]
 name = "romaji"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["uzimith <uzimith.x9@gmail.com>"]
 description = "Romaji-Kana transliterator"
+repository = "https://github.com/uzimith/romaji"
+keywords = ["japanese", "romaji", "hiragana"]
 license = "MIT"
 
 [dependencies]
