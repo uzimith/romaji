@@ -2,5 +2,7 @@
 name = "romaji"
 version = "0.1.0"
 authors = ["uzimith <uzimith.x9@gmail.com>"]
+description = "Romaji-Kana transliterator"
+license = "MIT"
 
 [dependencies]
