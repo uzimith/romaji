@@ -1,7 +1,9 @@
 pub fn romaji_to_katakana(romaji: String) -> String {
     let mut chars = romaji.chars();
     let mut heads = chars.clone().take(2);
-    if heads.next() == heads.next() {
+    let first = heads.next();
+    let second = heads.next();
+    if first == second || (first == Some('t') && second == Some('c')) {
         chars.next();
         format!("{}{}", "ッ", katakana_map(chars.as_str()))
     } else {
@@ -241,4 +243,5 @@ fn test_romaji_to_katakana() {
     assert_eq!("チョ", romaji_to_katakana("cho".to_string()));
     assert_eq!("ー", romaji_to_katakana("-".to_string()));
     assert_eq!("ット", romaji_to_katakana("tto".to_string()));
+    assert_eq!("ッチョ", romaji_to_katakana("tcho".to_string()));
 }
