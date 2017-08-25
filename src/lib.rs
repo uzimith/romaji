@@ -1,4 +1,12 @@
-mod romaji;
-pub mod convert;
+#[macro_use]
+extern crate log;
+extern crate env_logger;
+#[macro_use]
+extern crate combine;
+#[macro_use]
+extern crate lazy_static;
 
-pub use self::romaji::RomajiExt;
+pub mod romaji;
+pub mod parse;
+pub mod error;
+pub mod map;
