@@ -2,7 +2,7 @@ pub fn katakana_to_romaji(katakana: String) -> String {
     let mut chars = katakana.chars();
     if chars.next() == Some('ッ') && chars.as_str() != "" {
         let res = romaji_map(chars.as_str());
-        return res.chars().next().unwrap().to_string() + &res
+        return res.chars().next().unwrap().to_string() + &res;
     }
     romaji_map(katakana.as_ref())
 }
@@ -160,7 +160,7 @@ pub fn romaji_map(katakana: &str) -> String {
         "デョ" => "dho",
         "ン" => "n",
         "ッ" => "xtsu",
-        kana => kana
+        kana => kana,
     }.to_string()
 }
 

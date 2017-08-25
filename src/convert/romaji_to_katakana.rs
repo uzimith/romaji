@@ -233,7 +233,7 @@ fn katakana_map(romaji: &str) -> String {
         "lyu" => "リュ",
         "lye" => "リェ",
         "lyo" => "リョ",
-        kana => kana
+        kana => kana,
     }.to_string()
 }
 

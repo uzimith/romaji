@@ -85,7 +85,7 @@ pub fn hiragana_to_katakana(hiragana: String) -> String {
         "ゔ" => "ヴ",
         "ゕ" => "ヵ",
         "ゖ" => "ヶ",
-        kana => kana
+        kana => kana,
     }.to_string()
 }
 

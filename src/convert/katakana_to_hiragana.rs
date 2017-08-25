@@ -85,7 +85,7 @@ pub fn katakana_to_hiragana(katakana: String) -> String {
         "ヴ" => "ゔ",
         "ヵ" => "ゕ",
         "ヶ" => "ゖ",
-        kana => kana
+        kana => kana,
     }.to_string()
 }
 
@@ -96,4 +96,3 @@ fn test_katakana_to_hiragana() {
     assert_eq!("ぎ", katakana_to_hiragana("ギ".to_string()));
     assert_eq!("ゃ", katakana_to_hiragana("ャ".to_string()));
 }
-
