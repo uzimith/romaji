@@ -2,8 +2,8 @@ use std::str;
 use std::string::String;
 use romaji::Japanase;
 use error::{Result, Error};
-use combine::char::{letter, string};
-use combine::{Parser, Stream, many, many1, token, one_of, choice, optional, try};
+use combine::char::{string};
+use combine::{Parser, Stream, many, many1, token, one_of, choice, optional, try, satisfy};
 
 parser!{
     fn japanase[I]()(I) -> Vec<Japanase>
@@ -229,7 +229,7 @@ parser!{
     where
         [I: Stream<Item = char>,]
     {
-        letter().map(|c: char| Japanase::other(c.to_string()))
+        satisfy(|_| true).expected("other").map(|c: char| Japanase::other(c.to_string()))
     }
 }
 
