@@ -1,0 +1,7 @@
+[package]
+name = "romaji-bench"
+version = "0.1.0"
+authors = ["uzimith <uzimith.x9@gmail.com>"]
+
+[dependencies]
+romaji = { git = "https://github.com/uzimith/romaji", branch = "combine" }
