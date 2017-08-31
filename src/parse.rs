@@ -73,7 +73,7 @@ parser!{
             try(string("ry")),
             try(string("ly")),
         ]).map(|s: &str| s.to_string() )
-        .or(one_of("xckgzjstdtnhbpmrl".chars()).map(|s: char| s.to_string()))
+        .or(one_of("xckgzjstdtnhbpmrlyw".chars()).map(|s: char| s.to_string()))
     }
 }
 
@@ -156,7 +156,7 @@ parser!{
             .map(|(a, b, c): (char, Vec<char>, char)| {
                 (a.to_string().repeat(b.len()), a.to_string() + &c.to_string())
             }),
-            try(one_of("xckgzjstdtnhbpmrl".chars()).then(|c: char| many1(token(c))))
+            try(one_of("xckgzjstdtnhbpmrlyw".chars()).then(|c: char| many1(token(c))))
             .map(|c: Vec<char>| (c[0].to_string().repeat(c.len()), c[0].to_string()))
         )
     }
